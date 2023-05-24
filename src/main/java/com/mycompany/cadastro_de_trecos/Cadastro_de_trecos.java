@@ -1,17 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Project/Maven2/JavaApp/src/main/java/${packagePath}/${mainClassName}.java to edit this template
- */
-
 package com.mycompany.cadastro_de_trecos;
 
 import java.util.Scanner;
 
 public class Cadastro_de_trecos {
+
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        
         clearScreen();
         mainMenu();
     }
@@ -33,26 +28,13 @@ public class Cadastro_de_trecos {
 
         // Executa um método conforme a opção escolhida.
         switch (option) {
-            case "0":
-                exitProgram();
-                break;
-            case "1":
-                listAll();
-                break;
-            case "2":
-                listOne();
-                break;
-            case "3":
-                newThing();
-                break;
-            case "4":
-                editThing();
-                break;
-            case "5":
-                deleteThing();
-                break;
-            default:
-                reloadMenu();
+            case "0" -> exitProgram();
+            case "1" -> listAll();
+            case "2" -> listOne();
+            case "3" -> newThing();
+            case "4" -> editThing();
+            case "5" -> deleteThing();
+            default -> reloadMenu();
         }
     }
 
@@ -75,26 +57,27 @@ public class Cadastro_de_trecos {
     // Cadastra um novo treco.
     public static void newThing() {
     }
-    
+
     // Edita um treco pelo Id.
-    public static void editThing(){}
-    
+    public static void editThing() {
+    }
+
     // Apaga um treco pelo Id.
-    public static void deleteThing() {        
+    public static void deleteThing() {
     }
-    
+
     // Recarrega o menu principal.
-    public static void reloadMenu(){        
-        clearScreen();
-        System.out.println("Opção errada!");
-        mainMenu();
+    public static void reloadMenu() {
+        clearScreen(); // Limpa o terminal.
+        System.out.println("Oooops! Opção inválida!\n");
+        mainMenu();    // Mostra o menu.
     }
-    
+
     // Limpa a tela do terminal.
     public static void clearScreen() {
         for (int i = 0; i < 100; i++) {
             System.out.println("\n");
         }
     }
-}
 
+}
