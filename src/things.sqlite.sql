@@ -1,11 +1,9 @@
-DROP DATABASE IF EXISTS things;
-CREATE DATABASE things CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE things;
+DROP TABLE IF EXISTS things;
 
-CREATE TABLE things(
-id INT PRIMARY KEY AUTO_INCREMENT,
-name VARCHAR(63),
-description VARCHAR(127)
+CREATE TABLE things (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(63),
+    description VARCHAR(127)
 );
 
 INSERT INTO things (name, description) VALUES
