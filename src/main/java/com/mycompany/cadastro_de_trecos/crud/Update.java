@@ -45,12 +45,24 @@ public class Update extends AppSetup {
             pstm.setInt(1, id);
             res = pstm.executeQuery();
             if (res.next()) {
-
-                // Se tem registro, exibe na view.
-                System.out.println(
-                        "\nID: " + res.getString("id") + "\n"
-                        + "  Nome: " + res.getString("name") + "\n"
-                        + "  Descrição: " + res.getString("description") + "\n"
+                String sepDH[] = res.getString("data").split(" ");
+                    String sepD[] = sepDH[0].split("-");
+                    String novoDH = sepD[2] + "/" + sepD[1] + "/" + sepD[0] + " " + sepDH[1];
+                    String nStatus = null;
+                    if (res.getString("status").equals("1")) {
+                        nStatus = "BLOQUEADO";
+                    }
+                    if (res.getString("status").equals("2")) {
+                        nStatus = "ATIVO";
+                    }
+                    // Exibe registro na view.
+                    System.out.println(
+                            "\nID: " + res.getString("id") + "\n"
+                            + "  Nome: " + res.getString("nome") + "\n"
+                            + "  Descrição: " + res.getString("descricao") + "\n"
+                            + "  Localização: " + res.getString("localizacao") + "\n"
+                            + "  Status: " + nStatus + "\n"
+                            + "  Data: " + novoDH + "\n"                
                 );
 
                 System.out.println("Insira os novos dados ou deixe em branco para manter os atuais:\n");
@@ -61,23 +73,28 @@ public class Update extends AppSetup {
                 System.out.print("\tNome: ");
                 String itemName = keyboard.nextLine().trim();
 
-                System.out.print("\tDescription: ");
+                System.out.print("\tDescrição: ");
                 String itemDescription = keyboard.nextLine().trim();
+                
+                System.out.print("\tLocalização: ");
+                String itemLocalization = keyboard.nextLine().trim();
 
                 // Pede confirmação.
                 System.out.print("\nOs dados acima estão corretos? [s/N] ");
                 if (keyboard.next().trim().toLowerCase().equals("s")) {
 
                     // Short Hand → https://www.w3schools.com/java/java_conditions_shorthand.asp
-                    String saveName = (itemName.equals("")) ? res.getString("name") : itemName;
-                    String saveDescription = (itemDescription.equals("")) ? res.getString("description") : itemDescription;
+                    String saveName = (itemName.equals("")) ? res.getString("nome") : itemName;
+                    String saveDescription = (itemDescription.equals("")) ? res.getString("descricao") : itemDescription;                    
+                    String saveLocalization = (itemLocalization.equals("")) ? res.getString("localizacao") : itemLocalization;
 
                     // Atualiza registro no banco de dados.
-                    sql = "UPDATE " + DBTABLE + " SET name = ?, description = ? WHERE id = ?";
+                    sql = "UPDATE " + DBTABLE + " SET nome = ?, descricao = ?, localizacao = ? WHERE id = ? AND status = '2';";
                     pstm = conn.prepareStatement(sql);
                     pstm.setString(1, saveName);
-                    pstm.setString(2, saveDescription);
-                    pstm.setInt(3, id);
+                    pstm.setString(2, saveDescription);                    
+                    pstm.setString(3, saveLocalization);
+                    pstm.setInt(4, id);
                     if (pstm.executeUpdate() == 1) {
 
                         // Se o registro foi criado.
