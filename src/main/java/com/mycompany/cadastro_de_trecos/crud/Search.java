@@ -5,18 +5,17 @@ import com.mycompany.cadastro_de_trecos.db.DbConnection;
 import com.mycompany.cadastro_de_trecos.setup.AppSetup;
 import java.sql.SQLException;
 
-public class Search extends AppSetup{
-    public static void search(){
-         
-        
+public class Search extends AppSetup {
+
+    public static void search() {
+
         String coisa = null;
         String sql;
         // Cabeçalho da view.
         System.out.println(appName + "\n" + appSep);
         System.out.println("Buscar por palavra chave");
-        System.out.println(appSep + "\n");        
-              
-        
+        System.out.println(appSep + "\n");
+
         try {
 
             // Recebe o Id do teclado.
@@ -33,15 +32,16 @@ public class Search extends AppSetup{
             System.out.println("Oooops! Opção inválida!\n");
             search();
         }
-        
+
         try {
 
             // Verifica se o registro existe.
-            sql = "SELECT * FROM " + DBTABLE + " WHERE name LIKE ? OR description LIKE ?";
+            sql = "SELECT * FROM " + DBTABLE + " WHERE status <> '0' AND nome LIKE ? OR descricao LIKE ? OR localizacao LIKE ? ORDER BY nome DESC;";
             conn = DbConnection.dbConnect();
             pstm = conn.prepareStatement(sql);
             pstm.setString(1, "%" + coisa + "%");
             pstm.setString(2, "%" + coisa + "%");
+            pstm.setString(3, "%" + coisa + "%");
             res = pstm.executeQuery();
 
             System.out.println(" ");
@@ -49,12 +49,24 @@ public class Search extends AppSetup{
 
                 // Se encontrou registros.
                 do {
-
+                    String sepDH[] = res.getString("data").split(" ");
+                    String sepD[] = sepDH[0].split("-");
+                    String novoDH = sepD[2] + "/" + sepD[1] + "/" + sepD[0] + " " + sepDH[1];
+                    String nStatus = null;
+                    if (res.getString("status").equals("1")) {
+                        nStatus = "BLOQUEADO";
+                    }
+                    if (res.getString("status").equals("2")) {
+                        nStatus = "ATIVO";
+                    }
                     // Exibe registro na view.
                     System.out.println(
-                            "ID: " + res.getString("id") + "\n"
-                            + "  Nome: " + res.getString("name") + "\n"
-                            + "  Descrição: " + res.getString("description") + "\n"
+                            "\nID: " + res.getString("id") + "\n"
+                            + "  Nome: " + res.getString("nome") + "\n"
+                            + "  Descrição: " + res.getString("descricao") + "\n"
+                            + "  Localização: " + res.getString("localizacao") + "\n"
+                            + "  Status: " + nStatus + "\n"
+                            + "  Data: " + novoDH + "\n"
                     );
                 } while (res.next());
             } else {
@@ -102,6 +114,6 @@ public class Search extends AppSetup{
             System.exit(0);
         }
 
-}
-    
+    }
+
 }

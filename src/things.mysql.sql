@@ -1,16 +1,12 @@
-DROP DATABASE IF EXISTS things;
-CREATE DATABASE things CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE things;
+DROP DATABASE IF EXISTS crudinho;
+CREATE DATABASE crudinho CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE crudinho;
 
-CREATE TABLE things(
-id INT PRIMARY KEY AUTO_INCREMENT,
-name VARCHAR(63),
-description VARCHAR(127)
+CREATE TABLE trecos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    data TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    nome VARCHAR(63) NOT NULL,
+    descricao VARCHAR(127) NOT NULL,
+    localizacao VARCHAR(127) NOT NULL,
+    status ENUM('0', '1', '2') DEFAULT '2'
 );
-
-INSERT INTO things (name, description) VALUES
-('Pelo de iguana', 'Pelinhos bem pequenos e amarelados.'),
-('Perna de cobra', 'Grande e forte, permitindo correr muito.'),
-('Orelha de pernilongo', 'Não escuta bem. Só tem zumbido.'),
-('Bigode de sapo', 'Chique, fashion e másculo.'),
-('Olhos de cobra cega', 'Ainda não vimos um melhor.');

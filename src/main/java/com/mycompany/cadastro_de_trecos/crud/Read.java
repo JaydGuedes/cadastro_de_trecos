@@ -19,7 +19,7 @@ public class Read extends AppSetup {
         try {
 
             // Consulta o banco de dados.
-            String sql = "SELECT * FROM " + DBTABLE;
+            String sql = "SELECT * FROM " + DBTABLE + " WHERE status <> '0' ORDER BY nome DESC; ";
             conn = DbConnection.dbConnect();
             stmt = conn.createStatement();
             res = stmt.executeQuery(sql);
@@ -29,12 +29,24 @@ public class Read extends AppSetup {
 
                 // Se encontrou registros.
                 do {
-
+                    String sepDH[] = res.getString("data").split(" ");
+                    String sepD[] = sepDH[0].split("-");
+                    String novoDH = sepD[2] + "/" + sepD[1] + "/" + sepD[0] + " " + sepDH[1];
+                    String nStatus = null;
+                    if (res.getString("status").equals("1")) {
+                        nStatus = "BLOQUEADO";
+                    }
+                    if (res.getString("status").equals("2")) {
+                        nStatus = "ATIVO";
+                    }
                     // Exibe registro na view.
                     System.out.println(
-                            "ID: " + res.getString("id") + "\n"
-                            + "  Nome: " + res.getString("name") + "\n"
-                            + "  Descrição: " + res.getString("description") + "\n"
+                            "\nID: " + res.getString("id") + "\n"
+                            + "  Nome: " + res.getString("nome") + "\n"
+                            + "  Descrição: " + res.getString("descricao") + "\n"
+                            + "  Localização: " + res.getString("localizacao") + "\n"
+                            + "  Status: " + nStatus + "\n"
+                            + "  Data: " + novoDH + "\n"
                     );
                 } while (res.next());
             } else {
@@ -112,7 +124,7 @@ public class Read extends AppSetup {
         try {
 
             // Faz consulta no banco de dados usando "preparedStatement".
-            sql = "SELECT * FROM " + DBTABLE + " WHERE id = ?";
+            sql = "SELECT * FROM " + DBTABLE + " WHERE id = ? AND status <> '0' ORDER BY nome DESC; ";
             conn = DbConnection.dbConnect();
             pstm = conn.prepareStatement(sql);
 
@@ -124,12 +136,24 @@ public class Read extends AppSetup {
 
             if (res.next()) {
 
-                // Se tem registro, exibe na view.
-                System.out.println(
-                        "\nID: " + res.getString("id") + "\n"
-                        + "  Nome: " + res.getString("name") + "\n"
-                        + "  "
-                        + "Descrição: " + res.getString("description") + "\n"
+                String sepDH[] = res.getString("data").split(" ");
+                    String sepD[] = sepDH[0].split("-");
+                    String novoDH = sepD[2] + "/" + sepD[1] + "/" + sepD[0] + " " + sepDH[1];
+                    String nStatus = null;
+                    if (res.getString("status").equals("1")) {
+                        nStatus = "BLOQUEADO";
+                    }
+                    if (res.getString("status").equals("2")) {
+                        nStatus = "ATIVO";
+                    }
+                    // Exibe registro na view.
+                    System.out.println(
+                            "\nID: " + res.getString("id") + "\n"
+                            + "  Nome: " + res.getString("nome") + "\n"
+                            + "  Descrição: " + res.getString("descricao") + "\n"
+                            + "  Localização: " + res.getString("localizacao") + "\n"
+                            + "  Status: " + nStatus + "\n"
+                            + "  Data: " + novoDH + "\n"
                 );
             } else {
 
